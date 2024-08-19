@@ -14,7 +14,10 @@ class Migrate extends AbstractCommand
   public static function getArguments(): array
   {
     return [
-      (new Argument('rollback'))->description('Roll backwards. An integer n may also be provided to rollback n times.')->required(false)->allowAsShort(true),
+      (new Argument('rollback'))
+        ->description('Roll backwards. An integer n may also be provided to rollback n times.')
+        ->required(false)
+        ->allowAsShort(true),
     ];
   }
 

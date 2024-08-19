@@ -17,7 +17,10 @@ class DbWipe extends AbstractCommand
   public static function getArguments(): array
   {
     return [
-      (new Argument('backup'))->description('Create a backup before deleting the database.')->required(false)->allowAsShort(true),
+      (new Argument('backup'))
+        ->description('Create a backup before deleting the database.')
+        ->required(false)
+        ->allowAsShort(true),
     ];
   }
 
