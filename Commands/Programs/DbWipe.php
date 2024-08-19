@@ -5,6 +5,8 @@ namespace Commands\Programs;
 
 use Commands\AbstractCommand;
 use Database\MySQLWrapper;
+use Commands\Argument;
+use Helpers\Settings;
 
 class DbWipe extends AbstractCommand
 {
@@ -14,16 +16,38 @@ class DbWipe extends AbstractCommand
   // 引数を割り当て
   public static function getArguments(): array
   {
-    return [];
+    return [
+      (new Argument('backup'))->description('Create a backup before deleting the database.')->required(false)->allowAsShort(true),
+    ];
   }
 
   public function execute(): int
   {
-    // オプションがある場合にそのしょりをする
-
-    // DBの削除処理
     $mysqli = new MySQLWrapper();
     $databaseName = $mysqli->getDatabaseName();
+    $username = Settings::env('DATABASE_USER');
+    $password = Settings::env('DATABASE_USER_PASSWORD');
+    $backupFile = 'backup.sql';
+
+    // backupオプションの処理
+    $backup = $this->getArgumentValue('backup');
+
+    if ($backup) {
+      $this->log("Creating backup....");
+
+      $command = "mysqldump -u $username -p$password $databaseName > $backupFile";
+      exec($command, $output, $returnVar);
+
+      if ($returnVar !== 0) {
+        $this->log('Failed to create backup.');
+        return 1;
+      }
+
+      $this->log('Backup created successfully.');
+    }
+    // backupオプションの処理 ここまで
+
+    // DBの削除処理
     $query = "DROP DATABASE $databaseName";
 
     if ($mysqli->query($query) === true) {
