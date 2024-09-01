@@ -161,6 +161,7 @@ class Migrate extends AbstractCommand
   {
     $mysqli = new MySQLWrapper();
     foreach ($queries as $query) {
+      // このメソッドでクエリを実行している falseが返された場合、例外をスローする
       $result = $mysqli->query($query);
       if ($result === false) throw new \Exception(sprintf("Query {%s} failed.", $query));
       else $this->log('Ran query: ' . $query);
