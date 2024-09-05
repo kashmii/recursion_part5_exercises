@@ -2,7 +2,10 @@
 
 namespace Database\Seeds;
 
+require_once 'vendor/autoload.php';
+
 use Database\AbstractSeeder;
+use Faker\Factory;
 
 class ComputerPartsSeeder extends AbstractSeeder
 {
@@ -68,71 +71,29 @@ class ComputerPartsSeeder extends AbstractSeeder
 
   public function createRowData(): array
   {
-    return [
-      [
-        'Ryzen 9 5900X',
-        'CPU',
-        'AMD',
-        '100-000000061',
-        '2020-11-05',
-        'A high-performance 12-core processor.',
-        90,
-        549.99,
-        0.05,
-        105.0,
-        0.04,
-        0.04,
-        0.005,
-        5
-      ],
-      [
-        'GeForce RTX 3080',
-        'GPU',
-        'NVIDIA',
-        '10G-P5-3897-KR',
-        '2020-09-17',
-        'A powerful gaming GPU with ray tracing support.',
-        93,
-        699.99,
-        0.04,
-        320.0,
-        0.285,
-        0.112,
-        0.05,
-        5
-      ],
-      [
-        'Samsung 970 EVO SSD',
-        'SSD',
-        'Samsung',
-        'MZ-V7E500BW',
-        '2018-04-24',
-        'A fast NVMe M.2 SSD with 500GB storage.',
-        88,
-        79.99,
-        0.02,
-        5.7,
-        0.08,
-        0.022,
-        0.0023,
-        5
-      ],
-      [
-        'Corsair Vengeance LPX 16GB',
-        'RAM',
-        'Corsair',
-        'CMK16GX4M2B3200C16',
-        '2015-08-10',
-        'A DDR4 memory kit operating at 3200MHz.',
-        85,
-        69.99,
-        0.03,
-        1.2,
-        0.137,
-        0.03,
-        0.007,
-        7
-      ]
-    ];
+    $faker = Factory::create();
+
+    $parts = [];
+    for ($i = 0; $i < 1000; $i++) {
+      $element = [
+        $faker->word(),
+        $faker->word(),
+        $faker->company(),
+        $faker->word(),
+        $faker->date(),
+        $faker->sentence(),
+        $faker->numberBetween(0, 100),
+        $faker->randomFloat(2, 0, 1000),
+        $faker->randomFloat(2, 0, 1),
+        $faker->randomFloat(2, 0, 1000),
+        $faker->randomFloat(2, 0, 1000),
+        $faker->randomFloat(2, 0, 1000),
+        $faker->randomFloat(2, 0, 1000),
+        $faker->numberBetween(0, 10)
+      ];
+      array_push($parts, $element);
+    }
+
+    return $parts;
   }
 }
